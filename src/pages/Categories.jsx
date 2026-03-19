@@ -39,7 +39,7 @@ const Categories = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/categories")
+    fetch("http://vercel-backend-exfq.onrender.com/api/categories")
       .then((res) => res.json())
       .then(setCategories)
       .catch(() => {});

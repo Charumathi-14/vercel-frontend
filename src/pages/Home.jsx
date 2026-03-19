@@ -72,7 +72,7 @@ const Home = () => {
 
   /* ---------- AUTHORS ---------- */
   useEffect(() => {
-    fetch("http://localhost:4000/api/search-authors")
+    fetch("http://vercel-backend-exfq.onrender.com/api/search-authors")
       .then((res) => res.json())
       .then(setAuthors)
       .catch(() => {});
@@ -80,7 +80,7 @@ const Home = () => {
 
   /* ---------- CATEGORIES ---------- */
   useEffect(() => {
-    fetch("http://localhost:4000/api/categories")
+    fetch("http://vercel-backend-exfq.onrender.com/api/categories")
       .then((res) => res.json())
       .then(setCategories)
       .catch(() => {});
@@ -88,7 +88,7 @@ const Home = () => {
 
   /* ---------- HISTORY ---------- */
   useEffect(() => {
-    fetch("http://localhost:4000/api/history", {
+    fetch("http://vercel-backend-exfq.onrender.com/api/history", {
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : null))

@@ -17,7 +17,7 @@ const CategoryBooks = () => {
     setLoading(true);
 
     fetch(
-      `http://localhost:4000/api/category-books/${encodeURIComponent(
+      `http://vercel-backend-exfq.onrender.com/api/category-books/${encodeURIComponent(
         categoryName
       )}`
     )

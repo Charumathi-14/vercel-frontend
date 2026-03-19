@@ -15,6 +15,7 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
     if (!name || !email || !password) {
       toast.error("All fields are required");
       return;
@@ -22,20 +23,25 @@ const Signup = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
+
+      const res = await axios.post(
         `${serrverUrl}/api/user/Signup`,
         { name, email, password },
         { withCredentials: true }
       );
 
-      if (data.success) {
-        toast.success("Account created successfully");
+      const data = res.data;
+      console.log("Signup response:", data);
+
+      if (res.status === 200 || res.status === 201) {
+        toast.success(data.message || "Account created successfully");
         navigate("/login");
       } else {
-        toast.error("Signup failed");
+        toast.error(data.message || "Signup failed");
       }
-    } catch {
-      toast.error("Signup error");
+    } catch (error) {
+      console.log("Signup error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -43,8 +49,6 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-[#030b17] px-4">
-
-      {/* CARD */}
       <div
         className="
           w-full max-w-md p-10 rounded-3xl
@@ -52,20 +56,16 @@ const Signup = () => {
           shadow-[10px_10px_25px_#01060d,-10px_-10px_25px_#061b3a]
         "
       >
-        {/* LOGO */}
         <div className="flex items-center justify-center gap-2 text-3xl font-bold text-white mb-8">
           <HiMiniBuildingLibrary />
           <span>BookHive</span>
         </div>
 
-        {/* TITLE */}
         <h2 className="text-center text-xl text-slate-300 font-semibold mb-8">
           Create Your Account
         </h2>
 
-        {/* FORM */}
         <form onSubmit={handleSignup} className="space-y-6">
-
           <div>
             <label className="text-sm text-slate-400 mb-1 block">
               Full Name
@@ -102,7 +102,6 @@ const Signup = () => {
             />
           </div>
 
-          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
@@ -118,7 +117,6 @@ const Signup = () => {
           </button>
         </form>
 
-        {/* LOGIN LINK */}
         <p className="text-center mt-6 text-sm text-slate-400">
           Already have an account?{" "}
           <span
@@ -133,7 +131,6 @@ const Signup = () => {
   );
 };
 
-/* 🔹 SAME INPUT STYLE AS LOGIN & CONTACT */
 const NeoInput = ({ type, placeholder, value, onChange }) => (
   <input
     type={type}

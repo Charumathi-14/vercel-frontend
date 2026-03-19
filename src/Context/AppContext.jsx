@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, createContext } from "react";
-import { serrverUrl } from "../main";
+import BASE_URL from "../assets/apiCalling";
 
 const AppContext = createContext();
 

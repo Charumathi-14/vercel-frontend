@@ -16,23 +16,34 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) return toast.error("All fields are required");
+
+    if (!email || !password) {
+      toast.error("All fields are required");
+      return;
+    }
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
+
+      const res = await axios.post(
         `${serrverUrl}/api/user/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      if (data.success) {
+      const data = res.data;
+      console.log("Login response:", data);
+
+      if (res.status === 200 || res.status === 201) {
         await current();
-        toast.success("Login successful");
+        toast.success(data.message || "Login successful");
         navigate("/");
+      } else {
+        toast.error(data.message || "Login failed");
       }
-    } catch {
-      toast.error("Login failed");
+    } catch (error) {
+      console.log("Login error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -40,8 +51,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-[#030b17] px-4">
-
-      {/* CARD */}
       <div
         className="
           w-full max-w-md p-10 rounded-3xl
@@ -49,7 +58,6 @@ const Login = () => {
           shadow-[10px_10px_25px_#01060d,-10px_-10px_25px_#061b3a]
         "
       >
-        {/* LOGO */}
         <div className="flex items-center justify-center gap-2 text-3xl font-bold text-white mb-8">
           <HiMiniBuildingLibrary />
           <span>BookHive</span>
@@ -60,8 +68,6 @@ const Login = () => {
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-6">
-
-          {/* EMAIL */}
           <div>
             <label className="text-sm text-slate-400 block mb-1">
               Email
@@ -74,7 +80,6 @@ const Login = () => {
             />
           </div>
 
-          {/* PASSWORD */}
           <div>
             <label className="text-sm text-slate-400 block mb-1">
               Password
@@ -87,7 +92,6 @@ const Login = () => {
             />
           </div>
 
-          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
@@ -111,7 +115,7 @@ const Login = () => {
         </p>
 
         <p className="text-center text-sm text-slate-400 mt-3">
-          Don’t have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span
             onClick={() => navigate("/signup")}
             className="text-white cursor-pointer hover:underline"
@@ -124,7 +128,6 @@ const Login = () => {
   );
 };
 
-/* 🔹 CONTACT-STYLE NEUMORPHIC INPUT */
 const NeoInput = ({ type, placeholder, value, onChange }) => (
   <input
     type={type}

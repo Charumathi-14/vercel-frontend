@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Bookdetailspop from "../components/Bookdetailspop";
-import BASE_URL from "../assets/apiCalling";
+import { serrverUrl } from "../main";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -13,11 +13,13 @@ const Favorites = () => {
 
   const navigate = useNavigate();
 
+  /* ================= FETCH FAVORITES ================= */
   const fetchFavorites = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/user/favorites`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${serrverUrl}/api/user/favorites`,
+        { withCredentials: true }
+      );
       setFavorites(res.data.favorites || []);
     } catch (error) {
       console.log("Failed to load favorites", error);
@@ -30,20 +32,24 @@ const Favorites = () => {
     fetchFavorites();
   }, []);
 
+  /* ================= REMOVE FAVORITE ================= */
   const removeFavorite = async (bookId) => {
     try {
       await axios.post(
-        `${BASE_URL}/user/favorite`,
+        `${serrverUrl}/api/user/favorite`,
         { bookId },
         { withCredentials: true }
       );
 
-      setFavorites((prev) => prev.filter((item) => item.bookId !== bookId));
+      setFavorites((prev) =>
+        prev.filter((item) => item.bookId !== bookId)
+      );
     } catch (error) {
       console.log("Remove failed", error);
     }
   };
 
+  /* ================= OPEN BOOK POPUP ================= */
   const handleOpenBook = async (book) => {
     setPopupLoading(true);
 
@@ -76,13 +82,21 @@ const Favorites = () => {
     }
   };
 
+  /* ================= LOADING ================= */
   if (loading) {
-    return <div className="text-center mt-10">Loading favorites...</div>;
+    return (
+      <div className="text-center mt-10 text-[#473628] font-semibold">
+        Loading favorites...
+      </div>
+    );
   }
 
+  /* ================= UI ================= */
   return (
     <>
       <div className="min-h-screen bg-[#F7F4ED] px-6 py-10 relative">
+
+        {/* 🔙 BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
           className="absolute top-6 right-6 px-5 py-2 rounded-full bg-[#473628] text-white font-semibold hover:bg-[#5a4335] transition-all shadow-md"
@@ -95,7 +109,9 @@ const Favorites = () => {
         </h1>
 
         {favorites.length === 0 ? (
-          <p className="text-center text-gray-600">No favorite books yet.</p>
+          <p className="text-center text-gray-600">
+            No favorite books yet.
+          </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {favorites.map((book) => (
@@ -104,6 +120,7 @@ const Favorites = () => {
                 className="group bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden relative cursor-pointer"
                 onClick={() => handleOpenBook(book)}
               >
+                {/* ❤️ Remove Favorite */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -114,6 +131,7 @@ const Favorites = () => {
                   <FaHeart className="text-red-500 text-sm" />
                 </button>
 
+                {/* 📘 Book Image */}
                 <div className="w-full h-56 overflow-hidden">
                   <img
                     src={book.thumbnail || "https://via.placeholder.com/150"}
@@ -122,6 +140,7 @@ const Favorites = () => {
                   />
                 </div>
 
+                {/* 📄 Book Info */}
                 <div className="p-3 text-center">
                   <h2 className="font-semibold text-sm text-[#473628] line-clamp-2">
                     {book.title}
@@ -137,6 +156,7 @@ const Favorites = () => {
         )}
       </div>
 
+      {/* ================= POPUP LOADING ================= */}
       {popupLoading && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
           <div className="bg-white px-6 py-4 rounded-lg shadow text-center">
@@ -145,6 +165,7 @@ const Favorites = () => {
         </div>
       )}
 
+      {/* ================= BOOK DETAILS POPUP ================= */}
       <Bookdetailspop
         open={Boolean(selectedBook)}
         book={selectedBook}

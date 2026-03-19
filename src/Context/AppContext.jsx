@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, createContext } from "react";
-import BASE_URL from "../assets/apiCalling";
+import { serrverUrl } from "../main";
 
 const AppContext = createContext();
 
@@ -10,7 +10,7 @@ export const AppContextProvider = ({ children }) => {
 
   const current = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/auth/current`, {
+      const res = await axios.get(`${serrverUrl}/api/auth/current`, {
         withCredentials: true,
       });
 

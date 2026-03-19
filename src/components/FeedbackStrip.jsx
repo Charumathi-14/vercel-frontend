@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../assets/apiCalling";
+import { serrverUrl } from "../main";
 
 const FeedbackStrip = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ const FeedbackStrip = () => {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/feedback`)
+      .get(`${serrverUrl}/api/feedback`)
       .then((res) => {
         setFeedbacks(res.data);
       })

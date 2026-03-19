@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { serrverUrl } from "../main";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -27,14 +28,17 @@ const AuthorsPage = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
-  /* ---------- INITIAL LOAD ---------- */
   useEffect(() => {
-    fetch("https://vercel-backend-exfq.onrender.com/api/search-authors?q=a")
+    fetch(`${serrverUrl}/api/search-authors?q=a`)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setAuthors(data);
-          setBackupAuthors(data);
+        const authorsData = data.authors || data || [];
+        if (Array.isArray(authorsData)) {
+          setAuthors(authorsData);
+          setBackupAuthors(authorsData);
+        } else {
+          setAuthors([]);
+          setBackupAuthors([]);
         }
       })
       .catch(() => {
@@ -43,7 +47,6 @@ const AuthorsPage = () => {
       });
   }, []);
 
-  /* ---------- SEARCH ---------- */
   useEffect(() => {
     if (!search.trim()) {
       setAuthors(backupAuthors);
@@ -52,10 +55,11 @@ const AuthorsPage = () => {
 
     setLoading(true);
 
-    fetch(`https://vercel-backend-exfq.onrender.com/api/search-authors?q=${search}`)
+    fetch(`${serrverUrl}/api/search-authors?q=${encodeURIComponent(search)}`)
       .then((res) => res.json())
       .then((data) => {
-        setAuthors(Array.isArray(data) ? data : []);
+        const authorsData = data.authors || data || [];
+        setAuthors(Array.isArray(authorsData) ? authorsData : []);
       })
       .catch(() => setAuthors([]))
       .finally(() => setLoading(false));
@@ -63,8 +67,6 @@ const AuthorsPage = () => {
 
   return (
     <div className="min-h-screen bg-[#ABA293] py-16 px-6 relative">
-
-      {/* 🔙 BACK BUTTON — NEUMORPHIC */}
       <button
         onClick={() => navigate(-1)}
         className="
@@ -79,13 +81,9 @@ const AuthorsPage = () => {
         ← Back
       </button>
 
-      {/* HEADER + SEARCH */}
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6 mb-14">
-        <h1 className="text-4xl font-bold text-[#592219]">
-          Authors
-        </h1>
+        <h1 className="text-4xl font-bold text-[#592219]">Authors</h1>
 
-        {/* 🔍 SEARCH — INSET NEUMORPHISM */}
         <input
           type="text"
           placeholder="Search authors..."
@@ -100,9 +98,7 @@ const AuthorsPage = () => {
         />
       </div>
 
-      {/* AUTHORS GRID */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-12">
-
         {loading && (
           <p className="text-[#592219] col-span-full text-center">
             Searching authors...
@@ -125,7 +121,6 @@ const AuthorsPage = () => {
               onClick={() => navigate(`/author/${name}`)}
               className="flex flex-col items-center cursor-pointer group select-none"
             >
-              {/* AVATAR — NEUMORPHIC */}
               <div
                 style={{ backgroundColor: bg }}
                 className="

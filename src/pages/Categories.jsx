@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { serrverUrl } from "../main";
 
-/* 📚 ICON MAP (UNCHANGED) */
+/* 📚 ICON MAP */
 const genreIcons = {
   Fiction: "📖",
   Romance: "❤️",
@@ -39,22 +40,22 @@ const Categories = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://vercel-backend-exfq.onrender.com/api/categories")
+    fetch(`${serrverUrl}/api/categories`)
       .then((res) => res.json())
-      .then(setCategories)
-      .catch(() => {});
+      .then((data) => {
+        setCategories(data.categories || data || []);
+      })
+      .catch((err) => {
+        console.log("Failed to fetch categories", err);
+        setCategories([]);
+      });
   }, []);
 
   return (
     <div className="min-h-screen bg-[#ABA293] px-6 py-14 text-[#592219]">
-
       <div className="max-w-6xl mx-auto">
-
-        {/* ================= HEADER ================= */}
         <div className="flex justify-between items-center mb-12">
-          <h1 className="text-3xl font-bold">
-            Browse Categories
-          </h1>
+          <h1 className="text-3xl font-bold">Browse Categories</h1>
 
           <button
             onClick={() => navigate(-1)}
@@ -69,7 +70,6 @@ const Categories = () => {
           </button>
         </div>
 
-        {/* ================= CATEGORY GRID ================= */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
           {categories.map((cat, index) => {
             const icon = genreIcons[cat.name] || "📚";
@@ -80,24 +80,18 @@ const Categories = () => {
                 onClick={() => navigate(`/category/${cat.name}`)}
                 className="
                   cursor-pointer rounded-3xl p-8 text-center
-                  bg-[#E5]
+                  bg-[#ABA293]
                   shadow-[8px_8px_18px_#8f887a,-8px_-8px_18px_#c7bfa9]
                   hover:shadow-[inset_6px_6px_14px_#8f887a,inset_-6px_-6px_14px_#c7bfa9]
                   transition-all duration-300
                 "
               >
-                <div className="text-4xl mb-4">
-                  {icon}
-                </div>
-
-                <h3 className="font-semibold tracking-wide">
-                  {cat.name}
-                </h3>
+                <div className="text-4xl mb-4">{icon}</div>
+                <h3 className="font-semibold tracking-wide">{cat.name}</h3>
               </div>
             );
           })}
         </div>
-
       </div>
     </div>
   );

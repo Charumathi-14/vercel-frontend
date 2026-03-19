@@ -11,10 +11,11 @@ const FeedbackStrip = () => {
     axios
       .get(`${serrverUrl}/api/feedback`)
       .then((res) => {
-        setFeedbacks(res.data);
+        setFeedbacks(res.data.feedbacks || res.data || []);
       })
       .catch((err) => {
         console.log("Failed to load feedbacks", err);
+        setFeedbacks([]);
       });
   }, []);
 

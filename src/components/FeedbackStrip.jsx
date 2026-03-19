@@ -8,7 +8,7 @@ const FeedbackStrip = () => {
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
-    axios.get(`${serrverUrl}/api/feedback`).then((res) => {
+    axios.get(`${BASE_URL}/feedback`).then((res) => {
       setFeedbacks(res.data);
     });
   }, []);

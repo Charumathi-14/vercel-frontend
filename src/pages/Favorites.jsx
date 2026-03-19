@@ -16,7 +16,7 @@ const Favorites = () => {
   const fetchFavorites = async () => {
     try {
       const res = await axios.get(
-        "http://vercel-backend-exfq.onrender.com/api/user/favorites",
+        "https://vercel-backend-exfq.onrender.com/api/user/favorites",
         { withCredentials: true }
       );
       setFavorites(res.data.favorites || []);
@@ -35,7 +35,7 @@ const Favorites = () => {
   const removeFavorite = async (bookId) => {
     try {
       await axios.post(
-        "http://vercel-backend-exfq.onrender.com/api/user/favorite",
+        "https://vercel-backend-exfq.onrender.com/api/user/favorite",
         { bookId },
         { withCredentials: true }
       );

@@ -11,7 +11,7 @@ const Bookdetailspop = ({ open, onClose, book }) => {
   const handleReadBook = async () => {
     try {
       await axios.post(
-        "http://vercel-backend-exfq.onrender.com/api/history/add",
+        "https://vercel-backend-exfq.onrender.com/api/history/add",
         {
           bookId: book.id || book.title,
           title: book.title,
@@ -34,7 +34,7 @@ const Bookdetailspop = ({ open, onClose, book }) => {
 
     try {
       await axios.post(
-        "http://vercel-backend-exfq.onrender.com/api/user/favorite",
+        "https://vercel-backend-exfq.onrender.com/api/user/favorite",
         {
           bookId: book.id || book.title,
           title: book.title,

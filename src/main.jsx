@@ -5,7 +5,7 @@ import "./App.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AppContextProvider } from "./Context/AppContext";
-export const serrverUrl = "http://localhost:4000";
+export const serrverUrl = "https://vercel-backend-exfq.onrender.com";
 createRoot(document.getElementById("root")).render(
   <AppContextProvider>
     <BrowserRouter>

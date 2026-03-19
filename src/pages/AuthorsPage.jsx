@@ -29,7 +29,7 @@ const AuthorsPage = () => {
 
   /* ---------- INITIAL LOAD ---------- */
   useEffect(() => {
-    fetch("http://vercel-backend-exfq.onrender.com/api/search-authors?q=a")
+    fetch("https://vercel-backend-exfq.onrender.com/api/search-authors?q=a")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -52,7 +52,7 @@ const AuthorsPage = () => {
 
     setLoading(true);
 
-    fetch(`http://vercel-backend-exfq.onrender.com/api/search-authors?q=${search}`)
+    fetch(`https://vercel-backend-exfq.onrender.com/api/search-authors?q=${search}`)
       .then((res) => res.json())
       .then((data) => {
         setAuthors(Array.isArray(data) ? data : []);

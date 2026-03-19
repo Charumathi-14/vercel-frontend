@@ -16,7 +16,7 @@ const History = () => {
     const fetchHistory = async () => {
       try {
         const res = await axios.get(
-          "http://vercel-backend-exfq.onrender.com/api/history",
+          "https://vercel-backend-exfq.onrender.com/api/history",
           { withCredentials: true }
         );
         setHistory(res.data.history || []);

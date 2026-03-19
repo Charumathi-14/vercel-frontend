@@ -8,7 +8,7 @@ const Feedback = () => {
     const navigate = useNavigate();
 
   const submitFeedback = async () => {
-    const res = await fetch("http://localhost:4000/api/feedback", {
+    const res = await fetch("https://vercel-backend-exfq.onrender.com/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, text }),

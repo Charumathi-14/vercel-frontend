@@ -10,7 +10,7 @@ export const AppContextProvider = ({ children }) => {
 
   const current = async () => {
     try {
-      const res = await axios.get(`${serrverUrl}/api/auth/current`, {
+      const res = await axios.get(`${BASE_URL}/auth/current`, {
         withCredentials: true,
       });
 
